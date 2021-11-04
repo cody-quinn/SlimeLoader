@@ -293,3 +293,6 @@ gradle-app.setting
 .classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,eclipse,netbeans,gradle,macos,windows,linux,dotenv,java
+
+releases/
+extensions/
