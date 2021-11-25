@@ -69,6 +69,7 @@ internal object SlimeDeserializer {
         }
 
         // Creating the chunk
+        // TODO: Read biomes lol
         val chunk = DynamicChunk(instance, arrayOfNulls<Biome>(1024).apply { fill(Biome.PLAINS) }, chunkX, chunkZ)
         readChunkSections(chunkDataStream, chunk)
 
@@ -86,9 +87,7 @@ internal object SlimeDeserializer {
             if (chunkSectionsMask[chunkSection]) {
                 // Light Data
                 val hasBlockLight = chunkDataStream.readBoolean()
-                val blockLight = if (hasBlockLight) {
-                    ByteArray(2048).also { chunkDataStream.read(it) }
-                } else null
+                val blockLight = if (hasBlockLight) { chunkDataStream.readNBytes(2048) } else null
 
                 // Palette Data
                 val paletteLength = chunkDataStream.readInt()
@@ -96,7 +95,7 @@ internal object SlimeDeserializer {
 
                 for (i in 0 until paletteLength) {
                     val nbtLength = chunkDataStream.readInt()
-                    val nbtRaw = ByteArray(nbtLength).also { chunkDataStream.read(it) }
+                    val nbtRaw = chunkDataStream.readNBytes(nbtLength)
                     val nbtCompound = readNBTTag<NBTCompound>(nbtRaw) ?: continue
                     paletteList.add(nbtCompound)
                 }
@@ -125,9 +124,7 @@ internal object SlimeDeserializer {
 
                 // Skylight
                 val hasSkyLight = chunkDataStream.readBoolean()
-                val skyLight = if (hasSkyLight) {
-                    ByteArray(2048).also { chunkDataStream.read(it) }
-                } else null
+                val skyLight = if (hasSkyLight) { chunkDataStream.readNBytes(2048) } else null
 
                 chunk.getSection(chunkSection).skyLight = skyLight
                 chunk.getSection(chunkSection).blockLight = blockLight

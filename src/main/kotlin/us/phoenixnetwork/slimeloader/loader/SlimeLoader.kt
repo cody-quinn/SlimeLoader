@@ -10,18 +10,18 @@ import net.minestom.server.entity.Entity
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.IChunkLoader
 import net.minestom.server.instance.Instance
+import net.minestom.server.tag.Tag
 import org.jglrxavpok.hephaistos.nbt.*
 import java.io.ByteArrayInputStream
 import java.io.DataInputStream
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import kotlin.math.ceil
-import kotlin.system.measureTimeMillis
 
 class SlimeLoader(
     instance: Instance,
     source: SlimeSource,
-    val readOnly: Boolean = false,
+    private val readOnly: Boolean = false,
 ) : IChunkLoader {
 
     private val depth: Int
@@ -50,12 +50,13 @@ class SlimeLoader(
 
         // Chunks
         val chunkMaskSize = ceil((width * depth) / 8.0).toInt()
-        chunkMask = BitSet.valueOf(ByteArray(chunkMaskSize).also { dataStream.read(it) })
+        chunkMask = BitSet.valueOf(dataStream.readNBytes(chunkMaskSize))
 
         // Loading raw data
         val chunkData = loadRawData(dataStream)
         val tileEntitiesData = loadRawData(dataStream)
         val entityData = if (dataStream.readBoolean()) loadRawData(dataStream) else ByteArray(0)
+        val extraData = loadRawData(dataStream)
 
         // Closing the data stream
         dataStream.close()
@@ -63,6 +64,7 @@ class SlimeLoader(
         // Loading it all
         loadChunks(instance, chunkData, tileEntitiesData)
         loadEntities(entityData)
+        loadExtra(instance, extraData)
     }
 
     private fun loadChunks(instance: Instance, chunkData: ByteArray, tileEntitiesData: ByteArray) {
@@ -73,6 +75,11 @@ class SlimeLoader(
 
     private fun loadEntities(entityData: ByteArray) {
         entities = SlimeDeserializer.readEntities(entityData)
+    }
+
+    private fun loadExtra(instance: Instance, extraData: ByteArray) {
+        val rootTag = readNBTTag<NBTCompound>(extraData)
+        instance.setTag(Tag.NBT, rootTag)
     }
 
     override fun loadChunk(instance: Instance, chunkX: Int, chunkZ: Int): CompletableFuture<Chunk?> {

@@ -7,10 +7,12 @@ Features:
   - [x] Blocks
   - [x] TileEntities
   - [x] Entities   (Incomplete)
+  - [x] Extra Data
 - [ ] World saving
   - [ ] Blocks
   - [ ] TileEntities
   - [ ] Entities
+  - [ ] Extra Data
 - [ ] Async
 
 ## Installation
