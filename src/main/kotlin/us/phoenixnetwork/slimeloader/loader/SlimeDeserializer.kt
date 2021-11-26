@@ -1,9 +1,6 @@
 package us.phoenixnetwork.slimeloader.loader
 
 import net.minestom.server.MinecraftServer
-import net.minestom.server.coordinate.Pos
-import net.minestom.server.entity.Entity
-import net.minestom.server.entity.EntityType
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.DynamicChunk
 import net.minestom.server.instance.Instance
@@ -11,8 +8,6 @@ import net.minestom.server.instance.block.Block
 import net.minestom.server.world.biomes.Biome
 import org.jglrxavpok.hephaistos.mca.unpack
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
-import org.jglrxavpok.hephaistos.nbt.NBTDouble
-import org.jglrxavpok.hephaistos.nbt.NBTFloat
 import org.jglrxavpok.hephaistos.nbt.NBTString
 import java.io.DataInputStream
 import java.util.*
@@ -182,28 +177,6 @@ internal object SlimeDeserializer {
 
             chunk.setBlock(localX, y, localZ, block)
         }
-    }
-
-    fun readEntities(entitiesData: ByteArray): MutableMap<Pos, Entity> {
-        val tempEntities = mutableMapOf<Pos, Entity>()
-
-        val entitiesCompound = readNBTTag<NBTCompound>(entitiesData)
-        val entities = entitiesCompound?.getList<NBTCompound>("entities")
-        if (entities != null) {
-            for (entity in entities) {
-                val id = entity.getString("id") ?: continue
-
-                val (x, y, z) = entity.getList<NBTDouble>("Pos")?.map { it.value } ?: continue
-                val (pitch, yaw) = entity.getList<NBTFloat>("Rotation")?.map { it.value } ?: continue
-
-                val pos = Pos(x, y, z, pitch, yaw)
-
-                val minestomEntity = Entity(EntityType.fromNamespaceId(id))
-                tempEntities[pos] = minestomEntity
-            }
-        }
-
-        return tempEntities
     }
 
 }

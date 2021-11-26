@@ -3,17 +3,21 @@
 Slime loader is a map loader & saver for the file format Slime as specified [here](https://github.com/PhoenixNetwork/SlimeLoader/blob/master/SLIME_FORMAT.txt) implemented in Minestom.
 
 Features:
+```
 - [x] World loading
   - [x] Blocks
   - [x] TileEntities
-  - [x] Entities   (Incomplete)
+  - [ ] Entities
   - [x] Extra Data
+        (Data will be loaded into the instance's "Data" Tag)
 - [ ] World saving
   - [ ] Blocks
   - [ ] TileEntities
   - [ ] Entities
   - [ ] Extra Data
+        (Data from "Data" Tag will be saved)
 - [ ] Async
+```
 
 ## Installation
 

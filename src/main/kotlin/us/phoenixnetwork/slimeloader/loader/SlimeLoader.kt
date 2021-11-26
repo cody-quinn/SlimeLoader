@@ -55,16 +55,15 @@ class SlimeLoader(
         // Loading raw data
         val chunkData = loadRawData(dataStream)
         val tileEntitiesData = loadRawData(dataStream)
-        val entityData = if (dataStream.readBoolean()) loadRawData(dataStream) else ByteArray(0)
+        if (dataStream.readBoolean()) loadRawData(dataStream) else ByteArray(0) // Skipping past entity data
         val extraData = loadRawData(dataStream)
 
         // Closing the data stream
         dataStream.close()
 
         // Loading it all
-        loadChunks(instance, chunkData, tileEntitiesData)
-        loadEntities(entityData)
         loadExtra(instance, extraData)
+        loadChunks(instance, chunkData, tileEntitiesData)
     }
 
     private fun loadChunks(instance: Instance, chunkData: ByteArray, tileEntitiesData: ByteArray) {
@@ -73,13 +72,9 @@ class SlimeLoader(
         SlimeDeserializer.loadTileEntities(tileEntitiesData, chunks)
     }
 
-    private fun loadEntities(entityData: ByteArray) {
-        entities = SlimeDeserializer.readEntities(entityData)
-    }
-
     private fun loadExtra(instance: Instance, extraData: ByteArray) {
         val rootTag = readNBTTag<NBTCompound>(extraData)
-        instance.setTag(Tag.NBT, rootTag)
+        instance.setTag(Tag.NBT("Data"), rootTag)
     }
 
     override fun loadChunk(instance: Instance, chunkX: Int, chunkZ: Int): CompletableFuture<Chunk?> {
