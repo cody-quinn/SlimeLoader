@@ -5,22 +5,22 @@ import us.phoenixnetwork.slimeloader.UnknownFileTypeException
 import us.phoenixnetwork.slimeloader.UnsupportedMinecraftVersionException
 import us.phoenixnetwork.slimeloader.UnsupportedSlimeVersionException
 import us.phoenixnetwork.slimeloader.source.SlimeSource
-import net.minestom.server.coordinate.Pos
-import net.minestom.server.entity.Entity
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.IChunkLoader
 import net.minestom.server.instance.Instance
 import net.minestom.server.tag.Tag
 import org.jglrxavpok.hephaistos.nbt.*
-import java.io.ByteArrayInputStream
+import us.phoenixnetwork.slimeloader.helpers.ChunkHelpers.getChunkIndex
+import us.phoenixnetwork.slimeloader.helpers.NBTHelpers.readNBTTag
 import java.io.DataInputStream
+import java.io.DataOutputStream
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import kotlin.math.ceil
 
 class SlimeLoader(
     instance: Instance,
-    source: SlimeSource,
+    private val slimeSource: SlimeSource,
     private val readOnly: Boolean = false,
 ) : IChunkLoader {
 
@@ -28,14 +28,12 @@ class SlimeLoader(
     private val width: Int
     private val chunkMinX: Short
     private val chunkMinZ: Short
-
     private val chunkMask: BitSet
 
     private var chunks = mutableMapOf<Long, Chunk>()
-    private var entities = mutableMapOf<Pos, Entity>()
 
     init {
-        val dataStream = DataInputStream(source.load())
+        val dataStream = DataInputStream(slimeSource.load())
 
         // Checking some magic numbers
         if (dataStream.readShort() != 0xB10B.toShort()) throw UnknownFileTypeException()
@@ -78,19 +76,24 @@ class SlimeLoader(
 
     override fun loadChunk(instance: Instance, chunkX: Int, chunkZ: Int): CompletableFuture<Chunk?> {
         val chunk = chunks[getChunkIndex(chunkX, chunkZ)]
-
-        // Spawning entities
-        entities.filterKeys { it.chunkX() == chunkX && it.chunkZ() == chunkZ }
-                .forEach { (pos, entity) -> entity.setInstance(instance, pos) }
-
         return CompletableFuture.completedFuture(chunk)
     }
 
     override fun saveChunk(chunk: Chunk): CompletableFuture<Void> {
         if (readOnly) return CompletableFuture.completedFuture(null)
-
         chunks[getChunkIndex(chunk.chunkX, chunk.chunkZ)] = chunk
-        //TODO
+        return CompletableFuture.completedFuture(null)
+    }
+
+    override fun saveInstance(instance: Instance): CompletableFuture<Void> {
+        if (readOnly) return CompletableFuture.completedFuture(null)
+
+        val outputStream = slimeSource.save()
+        val dataOutputStream = DataOutputStream(outputStream)
+
+        val serializer = SlimeSerializer()
+        serializer.serialize(dataOutputStream, instance, chunks.values.toList())
+
         return CompletableFuture.completedFuture(null)
     }
 
@@ -103,8 +106,3 @@ class SlimeLoader(
     }
 
 }
-
-fun getChunkIndex(x: Int, z: Int): Long = (x.toLong() shl 32) + z
-
-inline fun <reified T : NBT> readNBTTag(bytes: ByteArray): T?
-    = NBTReader(ByteArrayInputStream(bytes), false).read() as? T
