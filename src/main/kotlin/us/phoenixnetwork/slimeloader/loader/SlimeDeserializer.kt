@@ -9,23 +9,26 @@ import net.minestom.server.world.biomes.Biome
 import org.jglrxavpok.hephaistos.mca.unpack
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
 import org.jglrxavpok.hephaistos.nbt.NBTString
+import java.io.ByteArrayInputStream
 import java.io.DataInputStream
 import java.util.*
 import kotlin.math.floor
 
-internal object SlimeDeserializer {
+internal class SlimeDeserializer(
+    private val instance: Instance,
+    private val chunkData: ByteArray,
+    private val tileEntityData: ByteArray,
+    private val depth: Int,
+    private val width: Int,
+    private val chunkMinX: Short,
+    private val chunkMinZ: Short,
+    private val chunkMask: BitSet
+) {
 
-    private val BLOCK_MANAGER = MinecraftServer.getBlockManager()
-
-    fun readChunks(
-        chunkDataStream: DataInputStream,
-        instance: Instance,
-        depth: Int,
-        width: Int,
-        chunkMinX: Short,
-        chunkMinZ: Short,
-        chunkMask: BitSet
-    ): Map<Long, Chunk> {
+    fun readChunks(): Map<Long, Chunk> {
+        val chunkDataByteStream = ByteArrayInputStream(chunkData)
+        val chunkDataStream = DataInputStream(chunkDataByteStream)
+        
         val tempChunks = mutableMapOf<Long, Chunk>()
         for (chunkZ in 0 until depth) {
             for (chunkX in 0 until width) {
@@ -41,6 +44,8 @@ internal object SlimeDeserializer {
                 }
             }
         }
+
+        loadTileEntities(tempChunks)
         return tempChunks
     }
 
@@ -140,11 +145,8 @@ internal object SlimeDeserializer {
         return Block.fromNamespaceId(name)?.withProperties(newProps)
     }
 
-    fun loadTileEntities(
-        tileEntitiesData: ByteArray,
-        chunks: Map<Long, Chunk>
-    ) {
-        val tileEntitiesCompound = readNBTTag<NBTCompound>(tileEntitiesData) ?: return
+    private fun loadTileEntities(chunks: Map<Long, Chunk>) {
+        val tileEntitiesCompound = readNBTTag<NBTCompound>(tileEntityData) ?: return
         val tileEntities = tileEntitiesCompound.getList<NBTCompound>("tiles") ?: return
         for (tileEntity in tileEntities) {
             val x = tileEntity.getInt("x") ?: continue
@@ -162,7 +164,7 @@ internal object SlimeDeserializer {
 
             val id: String? = tileEntity.getString("id")
             if (id != null) {
-                val blockHandler = BLOCK_MANAGER.getHandler(id)
+                val blockHandler = MinecraftServer.getBlockManager().getHandler(id)
                 if (blockHandler != null) {
                     block = block.withHandler(blockHandler)
                 }

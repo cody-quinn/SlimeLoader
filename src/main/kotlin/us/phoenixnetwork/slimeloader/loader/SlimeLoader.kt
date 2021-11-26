@@ -66,10 +66,9 @@ class SlimeLoader(
         loadChunks(instance, chunkData, tileEntitiesData)
     }
 
-    private fun loadChunks(instance: Instance, chunkData: ByteArray, tileEntitiesData: ByteArray) {
-        val chunkDataStream = DataInputStream(ByteArrayInputStream(chunkData))
-        chunks = SlimeDeserializer.readChunks(chunkDataStream, instance, depth, width, chunkMinX, chunkMinZ, chunkMask).toMutableMap()
-        SlimeDeserializer.loadTileEntities(tileEntitiesData, chunks)
+    private fun loadChunks(instance: Instance, chunkData: ByteArray, tileEntityData: ByteArray) {
+        val deserializer = SlimeDeserializer(instance, chunkData, tileEntityData, depth, width, chunkMinX, chunkMinZ, chunkMask)
+        chunks = deserializer.readChunks().toMutableMap()
     }
 
     private fun loadExtra(instance: Instance, extraData: ByteArray) {
