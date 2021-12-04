@@ -9,9 +9,7 @@ import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.IChunkLoader
 import net.minestom.server.instance.Instance
 import net.minestom.server.tag.Tag
-import org.jglrxavpok.hephaistos.nbt.*
-import us.phoenixnetwork.slimeloader.helpers.ChunkHelpers.getChunkIndex
-import us.phoenixnetwork.slimeloader.helpers.NBTHelpers.readNBTTag
+import org.jglrxavpok.hephaistos.nbt.NBTCompound
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.util.*
