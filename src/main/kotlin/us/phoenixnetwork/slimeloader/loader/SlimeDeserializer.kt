@@ -1,5 +1,8 @@
 package us.phoenixnetwork.slimeloader.loader
 
+
+import us.phoenixnetwork.slimeloader.ChunkHelpers.getChunkIndex
+import us.phoenixnetwork.slimeloader.NBTHelpers.readNBTTag
 import net.minestom.server.MinecraftServer
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.DynamicChunk
@@ -9,8 +12,6 @@ import net.minestom.server.world.biomes.Biome
 import org.jglrxavpok.hephaistos.mca.unpack
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
 import org.jglrxavpok.hephaistos.nbt.NBTString
-import us.phoenixnetwork.slimeloader.helpers.ChunkHelpers.getChunkIndex
-import us.phoenixnetwork.slimeloader.helpers.NBTHelpers.readNBTTag
 import java.io.ByteArrayInputStream
 import java.io.DataInputStream
 import java.util.*
@@ -30,7 +31,7 @@ internal class SlimeDeserializer(
     fun readChunks(): Map<Long, Chunk> {
         val chunkDataByteStream = ByteArrayInputStream(chunkData)
         val chunkDataStream = DataInputStream(chunkDataByteStream)
-        
+
         val tempChunks = mutableMapOf<Long, Chunk>()
         for (chunkZ in 0 until depth) {
             for (chunkX in 0 until width) {
@@ -72,7 +73,7 @@ internal class SlimeDeserializer(
 
         // Creating the chunk
         // TODO: Read biomes lol
-        val chunk = DynamicChunk(instance, arrayOfNulls<Biome>(1024).apply { fill(Biome.PLAINS) }, chunkX, chunkZ)
+        val chunk = DynamicChunk(instance, chunkX, chunkZ)
         readChunkSections(chunkDataStream, chunk)
 
         return chunk
