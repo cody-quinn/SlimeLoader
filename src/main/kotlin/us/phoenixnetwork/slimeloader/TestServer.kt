@@ -1,6 +1,5 @@
 package us.phoenixnetwork.slimeloader
 
-import us.phoenixnetwork.slimeloader.loader.SlimeLoader
 import us.phoenixnetwork.slimeloader.source.FileSlimeSource
 import us.phoenixnetwork.slimeloader.source.SlimeSource
 import net.minestom.server.MinecraftServer
@@ -8,6 +7,7 @@ import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.GameMode
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.instance.IChunkLoader
+import us.phoenixnetwork.slimeloader.loader.SlimeLoader
 import java.io.File
 import kotlin.system.measureTimeMillis
 

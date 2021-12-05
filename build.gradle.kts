@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.github.Minestom:Minestom:-SNAPSHOT")
+    compileOnly("com.github.Minestom:Minestom:1.18-SNAPSHOT")
 
     api("com.github.luben:zstd-jni:1.5.0-4")
 }
@@ -46,7 +46,7 @@ publishing {
                 packaging = "jar"
                 licenses {
                     license {
-                        name.set("GNU GPL-3")
+                        name.set("MIT")
                         url.set("https://github.com/PhoenixNetwork/SlimeLoader/blob/master/LICENSE")
                     }
                 }
