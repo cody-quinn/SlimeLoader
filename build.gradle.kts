@@ -6,7 +6,7 @@ plugins {
     `maven-publish`
 }
 
-group = "us.phoenixnetwork"
+group = "gg.astromc"
 version = "1.0.0-SNAPSHOT"
 
 repositories {
@@ -46,7 +46,7 @@ publishing {
                 packaging = "jar"
                 licenses {
                     license {
-                        name.set("GNU GPL-3")
+                        name.set("MIT")
                         url.set("https://github.com/PhoenixNetwork/SlimeLoader/blob/master/LICENSE")
                     }
                 }
@@ -64,9 +64,7 @@ publishing {
                 password = mavenPassword.toString()
             }
 
-            val snapshotRepository = uri("https://repo.phoenixnetwork.us/repository/maven-snapshots/")
-            val releaseRepository = uri("https://repo.phoenixnetwork.us/repository/maven-releases/")
-            url = if (version.toString().endsWith("SNAPSHOT")) snapshotRepository else releaseRepository
+            url = uri("https://repo.astromc.gg/artifactory/private/")
         }
     }
 }
