@@ -1,4 +1,4 @@
-package us.phoenixnetwork.slimeloader.helpers
+package gg.astromc.slimeloader.helpers
 
 object ChunkHelpers {
 

@@ -1,11 +1,11 @@
-package us.phoenixnetwork.slimeloader.loader
+package gg.astromc.slimeloader.loader
 
 import com.github.luben.zstd.Zstd
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.Instance
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
 import org.jglrxavpok.hephaistos.nbt.NBTString
-import us.phoenixnetwork.slimeloader.helpers.ChunkHelpers.getChunkIndex
+import gg.astromc.slimeloader.helpers.ChunkHelpers.getChunkIndex
 import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.util.*

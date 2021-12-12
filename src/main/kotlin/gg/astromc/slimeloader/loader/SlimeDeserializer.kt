@@ -1,4 +1,4 @@
-package us.phoenixnetwork.slimeloader.loader
+package gg.astromc.slimeloader.loader
 
 import net.minestom.server.MinecraftServer
 import net.minestom.server.instance.Chunk
@@ -9,8 +9,8 @@ import net.minestom.server.world.biomes.Biome
 import org.jglrxavpok.hephaistos.mca.unpack
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
 import org.jglrxavpok.hephaistos.nbt.NBTString
-import us.phoenixnetwork.slimeloader.helpers.ChunkHelpers.getChunkIndex
-import us.phoenixnetwork.slimeloader.helpers.NBTHelpers.readNBTTag
+import gg.astromc.slimeloader.helpers.ChunkHelpers.getChunkIndex
+import gg.astromc.slimeloader.helpers.NBTHelpers.readNBTTag
 import java.io.ByteArrayInputStream
 import java.io.DataInputStream
 import java.util.*

@@ -1,8 +1,8 @@
-package us.phoenixnetwork.slimeloader
+package gg.astromc.slimeloader
 
-import us.phoenixnetwork.slimeloader.loader.SlimeLoader
-import us.phoenixnetwork.slimeloader.source.FileSlimeSource
-import us.phoenixnetwork.slimeloader.source.SlimeSource
+import gg.astromc.slimeloader.loader.SlimeLoader
+import gg.astromc.slimeloader.source.FileSlimeSource
+import gg.astromc.slimeloader.source.SlimeSource
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.GameMode
