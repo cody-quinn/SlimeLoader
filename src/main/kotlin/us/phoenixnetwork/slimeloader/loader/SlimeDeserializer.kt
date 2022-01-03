@@ -6,6 +6,7 @@ import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.DynamicChunk
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
+import org.jglrxavpok.hephaistos.collections.ImmutableLongArray
 import org.jglrxavpok.hephaistos.mca.unpack
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
 import org.jglrxavpok.hephaistos.nbt.NBTString
@@ -89,7 +90,7 @@ internal class SlimeDeserializer(
             if (chunkSectionsMask[chunkSection]) {
                 // Light Data
                 val hasBlockLight = chunkDataStream.readBoolean()
-                val blockLight = if (hasBlockLight) { chunkDataStream.readNBytes(2048) } else null
+                val blockLight = if (hasBlockLight) { chunkDataStream.readNBytes(2048) } else ByteArray(2048)
 
                 // Palette Data
                 val paletteLength = chunkDataStream.readInt()
@@ -104,11 +105,7 @@ internal class SlimeDeserializer(
 
                 // Block States
                 val blockStatesLength = chunkDataStream.readInt()
-                val compactedBlockStates = LongArray(blockStatesLength)
-
-                for (i in 0 until blockStatesLength) {
-                    compactedBlockStates[i] = chunkDataStream.readLong()
-                }
+                val compactedBlockStates = ImmutableLongArray(blockStatesLength) { chunkDataStream.readLong() }
 
                 val sizeInBits = compactedBlockStates.size*64 / 4096
                 val blockStates = unpack(compactedBlockStates, sizeInBits).sliceArray(0 until 4096)
@@ -126,7 +123,7 @@ internal class SlimeDeserializer(
 
                 // Skylight
                 val hasSkyLight = chunkDataStream.readBoolean()
-                val skyLight = if (hasSkyLight) { chunkDataStream.readNBytes(2048) } else null
+                val skyLight = if (hasSkyLight) { chunkDataStream.readNBytes(2048) } else ByteArray(2048)
 
                 chunk.getSection(chunkSection).skyLight = skyLight
                 chunk.getSection(chunkSection).blockLight = blockLight
@@ -172,11 +169,9 @@ internal class SlimeDeserializer(
                 }
             }
 
-            tileEntity.removeTag("x").removeTag("y").removeTag("z")
-                .removeTag("id").removeTag("keepPacked")
-
-            if (tileEntity.size > 0) {
-                block = block.withNbt(tileEntity)
+            val compactedTileEntity = tileEntity.withRemovedKeys("x", "y", "z", "id", "keepPacked")
+            if (compactedTileEntity.size > 0) {
+                block = block.withNbt(compactedTileEntity)
             }
 
             chunk.setBlock(localX, y, localZ, block)

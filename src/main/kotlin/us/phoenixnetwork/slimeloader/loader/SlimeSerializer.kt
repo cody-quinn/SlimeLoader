@@ -7,6 +7,8 @@ import net.minestom.server.instance.DynamicChunk
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.Section
 import net.minestom.server.instance.palette.Palette
+import org.jglrxavpok.hephaistos.nbt.NBT
+import org.jglrxavpok.hephaistos.nbt.NBT.Companion.Kompound
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
 import org.jglrxavpok.hephaistos.nbt.NBTString
 import java.io.ByteArrayOutputStream
@@ -142,7 +144,9 @@ internal class SlimeSerializer {
         for (i in paletteBlocks) chunkSectionDataOutputStream.writeLong(i)
 
         // Writing the block data
-        val paletteList = mutableListOf(NBTCompound().set("Name", NBTString("minecraft:air")))
+        val paletteList = mutableListOf(Kompound {
+            this["Name"] = NBTString("minecraft:air")
+        })
 
         for (x in 0 until 16) {
             for (y in yOffset until yOffset + 16) {
