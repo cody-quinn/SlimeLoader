@@ -1,4 +1,4 @@
-package us.phoenixnetwork.slimeloader.source
+package gg.astromc.slimeloader.source
 
 import java.io.InputStream
 import java.io.OutputStream

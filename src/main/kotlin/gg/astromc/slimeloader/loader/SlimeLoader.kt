@@ -1,17 +1,17 @@
-package us.phoenixnetwork.slimeloader.loader
+package gg.astromc.slimeloader.loader
 
 import com.github.luben.zstd.Zstd
-import us.phoenixnetwork.slimeloader.UnknownFileTypeException
-import us.phoenixnetwork.slimeloader.UnsupportedMinecraftVersionException
-import us.phoenixnetwork.slimeloader.UnsupportedSlimeVersionException
-import us.phoenixnetwork.slimeloader.source.SlimeSource
+import gg.astromc.slimeloader.UnknownFileTypeException
+import gg.astromc.slimeloader.UnsupportedMinecraftVersionException
+import gg.astromc.slimeloader.UnsupportedSlimeVersionException
+import gg.astromc.slimeloader.source.SlimeSource
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.IChunkLoader
 import net.minestom.server.instance.Instance
 import net.minestom.server.tag.Tag
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
-import us.phoenixnetwork.slimeloader.helpers.ChunkHelpers.getChunkIndex
-import us.phoenixnetwork.slimeloader.helpers.NBTHelpers.readNBTTag
+import gg.astromc.slimeloader.helpers.ChunkHelpers.getChunkIndex
+import gg.astromc.slimeloader.helpers.NBTHelpers.readNBTTag
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.util.*

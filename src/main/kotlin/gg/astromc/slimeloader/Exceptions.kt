@@ -1,4 +1,4 @@
-package us.phoenixnetwork.slimeloader
+package gg.astromc.slimeloader
 
 sealed class SlimeLoaderException(message: String) : Exception(message)
 

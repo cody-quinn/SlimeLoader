@@ -1,4 +1,4 @@
-package us.phoenixnetwork.slimeloader.loader
+package gg.astromc.slimeloader.loader
 
 
 import com.github.luben.zstd.Zstd

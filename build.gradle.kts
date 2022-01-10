@@ -6,7 +6,7 @@ plugins {
     `maven-publish`
 }
 
-group = "us.phoenixnetwork"
+group = "gg.astromc"
 version = "1.0.0-1.18-SNAPSHOT"
 
 repositories {
@@ -64,8 +64,8 @@ publishing {
                 password = mavenPassword.toString()
             }
 
-            val snapshotRepository = uri("https://repo.phoenixnetwork.us/repository/maven-snapshots/")
-            val releaseRepository = uri("https://repo.phoenixnetwork.us/repository/maven-releases/")
+            val snapshotRepository = uri("https://repo.astromc.gg/repository/maven-snapshots/")
+            val releaseRepository = uri("https://repo.astromc.gg/repository/maven-releases/")
             url = if (version.toString().endsWith("SNAPSHOT")) snapshotRepository else releaseRepository
         }
     }
