@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "gg.astromc"
-version = "1.0.0-1.18-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 
 repositories {
     mavenCentral()

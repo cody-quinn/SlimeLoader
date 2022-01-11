@@ -1,5 +1,6 @@
 package gg.astromc.slimeloader.helpers
 
+
 import org.jglrxavpok.hephaistos.nbt.CompressedProcesser
 import org.jglrxavpok.hephaistos.nbt.NBT
 import org.jglrxavpok.hephaistos.nbt.NBTReader

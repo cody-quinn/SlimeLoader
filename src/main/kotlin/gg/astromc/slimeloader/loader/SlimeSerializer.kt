@@ -1,6 +1,5 @@
 package gg.astromc.slimeloader.loader
 
-
 import com.github.luben.zstd.Zstd
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.DynamicChunk
@@ -15,7 +14,6 @@ import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.util.*
 import kotlin.collections.HashMap
-
 
 internal class SlimeSerializer {
 
@@ -40,6 +38,7 @@ internal class SlimeSerializer {
                     ?.getPrivateProperty("blockPalette") as? Palette)
                     ?.getPrivateProperty("values") as? LongArray)?.size != 0)
             }
+
 
         // Writing header info
         outputDataStream.writeShort(0xB10B)

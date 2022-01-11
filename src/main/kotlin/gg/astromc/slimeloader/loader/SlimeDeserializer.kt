@@ -1,6 +1,5 @@
 package gg.astromc.slimeloader.loader
 
-
 import net.minestom.server.MinecraftServer
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.DynamicChunk

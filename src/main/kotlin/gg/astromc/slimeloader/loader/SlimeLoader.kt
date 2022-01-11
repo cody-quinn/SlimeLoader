@@ -9,7 +9,7 @@ import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.IChunkLoader
 import net.minestom.server.instance.Instance
 import net.minestom.server.tag.Tag
-import org.jglrxavpok.hephaistos.nbt.NBTCompound
+import org.jglrxavpok.hephaistos.nbt.*
 import gg.astromc.slimeloader.helpers.ChunkHelpers.getChunkIndex
 import gg.astromc.slimeloader.helpers.NBTHelpers.readNBTTag
 import java.io.DataInputStream
