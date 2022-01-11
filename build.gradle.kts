@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.github.Minestom:Minestom:-SNAPSHOT")
+    compileOnly("com.github.Minestom:Minestom:1.18-SNAPSHOT")
 
     api("com.github.luben:zstd-jni:1.5.0-4")
 }
@@ -64,7 +64,9 @@ publishing {
                 password = mavenPassword.toString()
             }
 
-            url = uri("https://repo.astromc.gg/artifactory/private/")
+            val snapshotRepository = uri("https://repo.astromc.gg/repository/maven-snapshots/")
+            val releaseRepository = uri("https://repo.astromc.gg/repository/maven-releases/")
+            url = if (version.toString().endsWith("SNAPSHOT")) snapshotRepository else releaseRepository
         }
     }
 }

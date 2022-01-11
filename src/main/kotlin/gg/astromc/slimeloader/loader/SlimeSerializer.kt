@@ -2,13 +2,18 @@ package gg.astromc.slimeloader.loader
 
 import com.github.luben.zstd.Zstd
 import net.minestom.server.instance.Chunk
+import net.minestom.server.instance.DynamicChunk
 import net.minestom.server.instance.Instance
+import net.minestom.server.instance.Section
+import net.minestom.server.instance.palette.Palette
+import org.jglrxavpok.hephaistos.nbt.NBT
+import org.jglrxavpok.hephaistos.nbt.NBT.Companion.Kompound
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
 import org.jglrxavpok.hephaistos.nbt.NBTString
-import gg.astromc.slimeloader.helpers.ChunkHelpers.getChunkIndex
 import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.util.*
+import kotlin.collections.HashMap
 
 internal class SlimeSerializer {
 
@@ -27,8 +32,13 @@ internal class SlimeSerializer {
         // Filtering the provided chunks
         val filteredChunks = chunks
             .filter { !it.isReadOnly } // Removing chunks that are reaed only
-            .filter { it.sections.filterValues { it.palette.blocks.isNotEmpty() }.isNotEmpty() } // Removing chunks without blocks
-            .sortedBy { getChunkIndex(it.chunkX, it.chunkZ) } // Filtering chunks by their index
+            .map { DynamicChunk(it.instance, it.chunkX, it.chunkZ) }
+            .filter {
+                ((((it.getPrivateProperty("sections") as? Array<Section>)
+                    ?.getPrivateProperty("blockPalette") as? Palette)
+                    ?.getPrivateProperty("values") as? LongArray)?.size != 0)
+            }
+
 
         // Writing header info
         outputDataStream.writeShort(0xB10B)
@@ -89,9 +99,18 @@ internal class SlimeSerializer {
 
         // Determining the bit set for the chunk mask
         val sectionsBitSet = BitSet()
-        for ((index, section) in chunk.sections) {
-            val palette = section.palette
-            if (palette.blockCount <= 0) continue
+        var sections = (chunk.getPrivateProperty("sections") as Array<Section>)
+        var map: HashMap<Int, Section> = HashMap();
+
+        var int = 0;
+        for (section in sections) {
+            map[int] = section
+            int++;
+        }
+
+        for ((index, section) in map) {
+            val palette: Palette = (section.getPrivateProperty("blockPalette") as Palette)
+            if (palette.data().isEmpty()) continue
 
             // Setting the bit set to true
             sectionsBitSet[index] = true
@@ -99,7 +118,7 @@ internal class SlimeSerializer {
         chunkDataOutputStream.write(sectionsBitSet.toByteArray())
 
         // Serializing all chunk sections
-        for ((index, section) in chunk.sections) {
+        for ((index, section) in map) {
             // Serializing the section data and writing it
             val serializedChunkSection = serializeChunkSection(chunk, index)
             chunkDataOutputStream.write(serializedChunkSection)
@@ -120,18 +139,18 @@ internal class SlimeSerializer {
         chunkSectionDataOutputStream.write(chunkSection.blockLight)
 
         // Writing the palette data
-        val paletteBlocks = chunkSection.palette.blocks
+        val paletteBlocks = ((chunkSection.getPrivateProperty("blockPalette") as Palette).getPrivateProperty("longs") as LongArray)
         for (i in paletteBlocks) chunkSectionDataOutputStream.writeLong(i)
 
         // Writing the block data
-        val paletteList = mutableListOf(NBTCompound().set("Name", NBTString("minecraft:air")))
+        val paletteList = mutableListOf(Kompound {
+            this["Name"] = NBTString("minecraft:air")
+        })
 
         for (x in 0 until 16) {
             for (y in yOffset until yOffset + 16) {
                 for (z in 0 until 16) {
                     val block = chunk.getBlock(x, y, z)
-
-                    //
                 }
             }
         }
@@ -151,6 +170,13 @@ internal class SlimeSerializer {
         dataOutputStream.writeInt(compressedData.size)
         dataOutputStream.writeInt(uncompressedData.size)
         dataOutputStream.write(compressedData)
+    }
+
+    private fun <T : Any> T.getPrivateProperty(variableName: String): Any? {
+        return javaClass.getDeclaredField(variableName).let { field ->
+            field.isAccessible = true
+            return@let field.get(this)
+        }
     }
 
 }
