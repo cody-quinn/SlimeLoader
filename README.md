@@ -25,11 +25,11 @@ Add the following to your `build.gradle.kts`
 
 ```kotlin
 repositories { 
-  maven("https://repo.phoenixnetwork.us/repository/maven-public/")
+  maven("https://jitpack.io")
 }
 
 dependencies { 
-  implementation("us.phoenixnetwork:SlimeLoader:1.0.0-SNAPSHOT")
+  implementation("com.github.CatDevz:SlimeLoader:master-SNAPSHOT")
 }
 ```
 
