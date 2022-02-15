@@ -1,6 +1,6 @@
 # 🗺️ SlimeLoader
 
-Slime loader is a map loader & saver for the file format Slime as specified [here](https://github.com/PhoenixNetwork/SlimeLoader/blob/master/SLIME_FORMAT.txt) implemented in Minestom.
+Slime loader is a map loader & saver for the file format Slime as specified [here](https://github.com/CatDevz/SlimeLoader/blob/master/SLIME_FORMAT.txt) implemented in Minestom.
 
 Features:
 ```
@@ -50,6 +50,6 @@ instanceContainer.chunkLoader = slimeLoader
 
 ## License
 
-SlimeLoader is licensed under the GNU GPL-3 license
+SlimeLoader is licensed under the MIT license
 
-###### Written by [Cody](https://github.com/CatDevz) for Phoenix Network
+###### Written by [Cody](https://github.com/CatDevz) for AstroMC
