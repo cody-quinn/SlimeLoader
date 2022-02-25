@@ -37,6 +37,8 @@ dependencies {
 
 The library is quite simple to use. If you need to get your slime world from somewhere else (ex. AWS S3) you can implement the `SlimeSource` interface. 
 
+#### Kotlin
+
 ```kotlin
 val instanceManager = MinecraftServer.getInstanceManager()
 val instanceContainer = instanceManager.createInstanceContainer()
@@ -46,6 +48,19 @@ val slimeSource: SlimeSource = FileSlimeSource(file)
 val slimeLoader: IChunkLoader = SlimeLoader(instanceContainer, slimeSource)
 
 instanceContainer.chunkLoader = slimeLoader
+```
+
+#### Java
+
+```java
+InstanceManager instanceManager = MinecraftServer.getInstanceManager();
+InstanceContainer instanceContainer = instanceManager.createInstanceContainer();
+
+File file = new File("Slime file goes here");
+SlimeSource slimeSource = new FileSlimeSource(file);
+SlimeLoader slimeLoader = new SlimeLoader(instanceContainer, slimeSource, false);
+
+instanceContainer.setChunkLoader(slimeLoader);
 ```
 
 ## License
