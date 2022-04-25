@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm") version "1.6.0"
 
     `maven-publish`
+    java
 }
 
 group = "gg.astromc"
@@ -27,6 +28,11 @@ val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
     freeCompilerArgs = listOf("-Xinline-classes")
     jvmTarget = "17"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 publishing {
