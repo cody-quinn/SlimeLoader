@@ -110,7 +110,7 @@ internal class SlimeSerializer {
 
         for ((index, section) in map) {
             val palette: Palette = (section.getPrivateProperty("blockPalette") as Palette)
-            if (palette.data().isEmpty()) continue
+            if (palette.count() == 0) continue
 
             // Setting the bit set to true
             sectionsBitSet[index] = true

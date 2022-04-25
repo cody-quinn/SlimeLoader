@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.github.Minestom:Minestom:0366027c5d")
+    compileOnly("com.github.Minestom:Minestom:7867313290")
 
     api("com.github.luben:zstd-jni:1.5.0-4")
 }
