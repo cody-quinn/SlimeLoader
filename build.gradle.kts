@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "1.6.0"
 
     `maven-publish`
-    java
+    `java-library`
 }
 
 group = "gg.astromc"
@@ -12,15 +12,12 @@ version = "1.0.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-
-    maven(url = "https://repo.spongepowered.org/maven")
-    maven(url = "https://jitpack.io")
+    maven("https://jitpack.io")
 }
 
 dependencies {
-    compileOnly("com.github.Minestom:Minestom:7867313290")
-
-    api("com.github.luben:zstd-jni:1.5.0-4")
+    compileOnly("com.github.Minestom:Minestom:af28caad9e")
+    api("com.github.luben:zstd-jni:1.5.2-3")
 }
 
 val compileKotlin: KotlinCompile by tasks
@@ -33,6 +30,8 @@ compileKotlin.kotlinOptions {
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+    withSourcesJar()
+    withJavadocJar()
 }
 
 publishing {
